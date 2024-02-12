@@ -66,5 +66,9 @@ public class FakeStoreProductService implements ProductService {
         }
         return answer;
     }
+
+    public GenericProductDto deleteProductById(Long id){
+        return null;
+    }
 }
 

@@ -5,11 +5,13 @@ import com.springboot.ecomproductservice.Dtos.GenericProductDto;
 import java.util.List;
 
 public interface ProductService {
-    public GenericProductDto getProductById(Long id);
+     GenericProductDto getProductById(Long id);
 
     GenericProductDto createProduct(GenericProductDto product);
 
-    public List<GenericProductDto> getAllProducts();
+     List<GenericProductDto> getAllProducts();
+
+     GenericProductDto deleteProductById(Long id);
 
 
 }

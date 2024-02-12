@@ -28,4 +28,8 @@ public class ProductController {
     public GenericProductDto createProduct(@RequestBody GenericProductDto product){
       return productService.createProduct(product);
     }
+    @DeleteMapping("{id}")
+    public GenericProductDto deleteProductById(@PathVariable("id") Long id) {
+        return null;
+}
 }
