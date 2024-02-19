@@ -3,6 +3,8 @@ package com.springboot.ecomproductservice.Controllers;
 import com.springboot.ecomproductservice.Dtos.GenericProductDto;
 import com.springboot.ecomproductservice.Services.ProductService;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,7 +23,8 @@ public class ProductController {
 
     }
     @GetMapping("/products/{id}")
-    public GenericProductDto getProductById(@PathVariable("id") Long id){
+    public GenericProductDto getProductById(@PathVariable("id") Long id)
+    {
      return productService.getProductById(id);
     }
     @PostMapping
@@ -29,7 +32,7 @@ public class ProductController {
       return productService.createProduct(product);
     }
     @DeleteMapping("{id}")
-    public GenericProductDto deleteProductById(@PathVariable("id") Long id) {
-        return null;
+    public ResponseEntity<GenericProductDto> deleteProductById(@PathVariable("id") Long id) {
+        return new ResponseEntity<>(productService.deleteProduct(id),HttpStatus.OK);
 }
 }
