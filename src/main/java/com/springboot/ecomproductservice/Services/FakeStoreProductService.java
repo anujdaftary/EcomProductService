@@ -2,6 +2,7 @@ package com.springboot.ecomproductservice.Services;
 
 import com.springboot.ecomproductservice.Dtos.FakeStoreProductDto;
 import com.springboot.ecomproductservice.Dtos.GenericProductDto;
+import com.springboot.ecomproductservice.exceptions.NotFoundException;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +22,8 @@ public class FakeStoreProductService implements ProductService {
         this.restTemplateBuilder = restTemplateBuilder;
     }
 
-    private String getProductURL = "https://fakestoreapi.com/products/{id}";
-    private String baseProductURL = "https://fakestoreapi.com/products";
+    private String specificProductURL = "https://fakestoreapi.com/products/{id}";
+    private String ProductRequestURL = "https://fakestoreapi.com/products";
 
     private GenericProductDto convertFakeStoreProductDtoIntoGenericProductDto(
             FakeStoreProductDto fakeStoreProductDto) {
@@ -39,21 +40,26 @@ public class FakeStoreProductService implements ProductService {
     }
 
     @Override
-    public GenericProductDto getProductById(Long id) {
+    public GenericProductDto getProductById(Long id) throws NotFoundException {
         RestTemplate restTemplate = restTemplateBuilder.build();
 
         ResponseEntity<FakeStoreProductDto> response =
-                restTemplate.getForEntity(getProductURL, FakeStoreProductDto.class, id);
+                restTemplate.getForEntity(specificProductURL, FakeStoreProductDto.class, id);
 
         FakeStoreProductDto fakeStoreProductDto = response.getBody();
+
+        if (fakeStoreProductDto == null) {
+            throw new NotFoundException("Product with id:" + id + " doesn`t exists");
+        }
         return convertFakeStoreProductDtoIntoGenericProductDto(fakeStoreProductDto);
+
     }
 
     @Override
     public GenericProductDto createProduct(GenericProductDto product) {
         RestTemplate restTemplate = restTemplateBuilder.build();
         ResponseEntity<GenericProductDto> response = restTemplate.postForEntity
-                (baseProductURL, product, GenericProductDto.class);
+                (ProductRequestURL, product, GenericProductDto.class);
         return response.getBody();
     }
 
@@ -61,7 +67,7 @@ public class FakeStoreProductService implements ProductService {
     public List<GenericProductDto> getAllProducts() {
         RestTemplate restTemplate = restTemplateBuilder.build();
         ResponseEntity<FakeStoreProductDto[]> response =
-                restTemplate.getForEntity(baseProductURL, FakeStoreProductDto[].class);
+                restTemplate.getForEntity(ProductRequestURL, FakeStoreProductDto[].class);
         List<GenericProductDto> answer = new ArrayList<>();
 
         for (FakeStoreProductDto fakeStoreProductDto : response.getBody()) {
@@ -80,7 +86,7 @@ public class FakeStoreProductService implements ProductService {
                 restTemplate.responseEntityExtractor(FakeStoreProductDto.class);
 
         ResponseEntity<FakeStoreProductDto> response =
-                restTemplate.execute(baseProductURL, HttpMethod.DELETE,
+                restTemplate.execute(specificProductURL, HttpMethod.DELETE,
                 requestCallback, responseExtractor, id);
 
         FakeStoreProductDto fakeStoreProductDto = response.getBody();

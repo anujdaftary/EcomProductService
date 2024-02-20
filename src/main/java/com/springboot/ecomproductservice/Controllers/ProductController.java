@@ -1,7 +1,9 @@
 package com.springboot.ecomproductservice.Controllers;
 
+import com.springboot.ecomproductservice.Dtos.ExceptionDto;
 import com.springboot.ecomproductservice.Dtos.GenericProductDto;
 import com.springboot.ecomproductservice.Services.ProductService;
+import com.springboot.ecomproductservice.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,9 +25,8 @@ public class ProductController {
 
     }
     @GetMapping("/products/{id}")
-    public GenericProductDto getProductById(@PathVariable("id") Long id)
-    {
-     return productService.getProductById(id);
+    public GenericProductDto getProductById(@PathVariable("id") Long id) throws NotFoundException {
+        return productService.getProductById(id);
     }
     @PostMapping
     public GenericProductDto createProduct(@RequestBody GenericProductDto product){
@@ -35,4 +36,10 @@ public class ProductController {
     public ResponseEntity<GenericProductDto> deleteProductById(@PathVariable("id") Long id) {
         return new ResponseEntity<>(productService.deleteProduct(id),HttpStatus.OK);
 }
+@ExceptionHandler(NotFoundException.class)
+private ResponseEntity<ExceptionDto> handleNotFoundException(NotFoundException notFoundException){
+        return new ResponseEntity(new ExceptionDto(HttpStatus.NOT_FOUND,notFoundException.getMessage()),
+                    HttpStatus.NOT_FOUND);
+
+    }
 }
