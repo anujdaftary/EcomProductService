@@ -9,7 +9,7 @@ import java.util.List;
 public class SelfProductServiceImpl implements ProductService{
 
     @Override
-    public List<GenericProductDto> getAllProducts() {
+   public List<GenericProductDto> getAllProducts() {
 
         return null;
     }
@@ -26,7 +26,8 @@ public class SelfProductServiceImpl implements ProductService{
     }
 
     @Override
-    public GenericProductDto deleteProduct(Long id) {
+    public GenericProductDto deleteProductById(Long id) {
+
         return null;
     }
 }

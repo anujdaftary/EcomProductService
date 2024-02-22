@@ -1,4 +1,4 @@
-package com.springboot.ecomproductservice.Dtos;
+package com.springboot.ecomproductservice.thirdPartyClientsFakeStore;
 
 import lombok.Getter;
 import lombok.Setter;
