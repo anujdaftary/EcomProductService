@@ -1,17 +1,15 @@
 package com.springboot.ecomproductservice.Dtos;
 
+import com.springboot.ecomproductservice.Models.Price;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
-
 @Getter
 @Setter
-public class GenericProductDto {
-    private Long id;
+public class ProductDto {
     private String title;
     private String description;
     private String image;
-    private String category;
-    private double price;
+    private Price price;
+
 }

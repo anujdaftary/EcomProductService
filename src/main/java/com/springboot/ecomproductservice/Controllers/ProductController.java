@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-//@RequestMapping("/products")
+@RequestMapping("/products")
 public class ProductController {
     private final ProductService productService;
 
@@ -18,25 +18,29 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @GetMapping("/products")
+    @GetMapping
     public List<GenericProductDto> getAllProducts(){
         return productService.getAllProducts();
 
     }
-    @GetMapping("/products/{id}")
+    @GetMapping("/{id}")
     public GenericProductDto getProductById(@PathVariable("id") Long id) throws NotFoundException {
         return productService.getProductById(id);
     }
-    @PostMapping("/products")
+    @PostMapping
     public GenericProductDto createProduct(@RequestBody GenericProductDto product){
       return productService.createProduct(product);
     }
-    @DeleteMapping("/products/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<GenericProductDto> deleteProductById(@PathVariable("id") Long id) {
         return new ResponseEntity<>(
                 productService.deleteProductById(id),
                 HttpStatus.OK);
     }
-
+    @PutMapping("/{id}")
+    public GenericProductDto updateProduct(@PathVariable("id") Long id,
+                                               @RequestBody GenericProductDto productDto){
+        return productService.updateProduct(productDto,id);
     }
+}
 
